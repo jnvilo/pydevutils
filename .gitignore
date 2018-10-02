@@ -1,0 +1,12 @@
+*.pyc
+*.egg-info/
+.DS_Store
+node_module/
+.coverage
+.eggs/
+build/
+node_modules/
+requirements.txt.old
+virtualenv
+dist/
+
