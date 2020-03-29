@@ -1,26 +1,17 @@
-from __future__ import print_function
-from __future__ import unicode_literals
-from __future__ import division
-
-from future.utils import raise_
-from future.utils import raise_with_traceback
-from future.utils import raise_from
-from future.utils import iteritems
-
-from builtins import FileExistsError
-#The above future imports helps/ensures that the code is compatible
-#with Python 2 and Python 3
-#Read more at http://python-future.org/compatible_idioms.html
+import sys
+import os
+import shutil
+import github 
+import argparse
+from pathlib import Path
 
 try:
-    import pydevscripts.wingdbstub
+    from pydevutils import wingdbstub
 except Exception as e:
-    print('Failed to load wingdb stub. Wing debugging will not be available')
-    print(e)
+    print('Failed to load wingdbstub. Wing debugging will not be available')
 
-import os
-from pathlib import Path
-import shutil
+from pydevutils.gittools import GitHubRepo
+
 
 def bump_package_patch_version():
     """
@@ -29,10 +20,16 @@ def bump_package_patch_version():
     """
     
     package_dir = os.getcwd()
-    setup_filename = Path(package_dir, "setup.py")
+    setup_filename = Path(package_dir, "setup.py")    
     tmp_setup_filename = Path(package_dir, "setup.py.tmp")
     
-    setup_file = open(setup_filename, "r+")
+    try:
+        setup_file = open(setup_filename, "r+")
+    except FileNotFoundError as e:
+        print("Could not read setup.py in current dir: {}".format(setup_filename))
+        sys.exit(1)
+    
+    
     lines = setup_file.readlines()
     
     tmp_setup_file = open(tmp_setup_filename, "w")
@@ -53,8 +50,54 @@ def bump_package_patch_version():
         
     shutil.move(tmp_setup_filename,setup_filename)
         
-     
+    
+def getcwd_name():
+    
+    cwd = os.getcwd()
+    return Path(cwd).name    
 
     
+def make_github_repo():
+    
+    description = """Creates a github repo. If local repo does not exist 
+    then it is also created. If local repo already exists then local repo is 
+    updated to set its origin to the newly created github repo.
+    
+    This tool helps to quickly push a local repo to github. Saves time from 
+    having to interact with the github web page to create a new repo. 
+    """
+    help_text1 = "The github name for the repo. Defaults to directory name."
+    help_text2 = "The path of the local repo. Defaults to searching current and parent directories for .git"
+
+    parser = argparse.ArgumentParser(description=description)
+    parser.add_argument('name', nargs="?", default=getcwd_name(), help=help_text1)
+    parser.add_argument('--path', action="store",dest="path", default=os.getcwd(), help=help_text2)
+    
+    args = parser.parse_args()    
+    gr = GitHubRepo(path=args.path, name=args.name)
+    
+    local_repo, created = gr.make_repo()
+    
+    if created:
+        print("Created local repo {}".format(args.path))
+    else:
+        print("Repo already exists. Skipping creation")
+        
+    print("Creating github repo: {} from local path: {}".format(args.name, args.path))
+    
+    try:
+        repo = gr.make_github_repo()
+    
+        print("Setting origin to {}".format(repo.ssh_url))
+        remote = gr.local_repo.create_remote("origin", repo.ssh_url)
     
     
+    except github.GithubException as e:
+        if e.status == 422: # Repository Exists
+            print("Repository exists")
+            
+            
+        
+if __name__ == "__main__":
+    
+    make_github_repo()

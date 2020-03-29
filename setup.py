@@ -3,7 +3,7 @@ import os
 from setuptools import setup
 
 PACKAGE = os.path.basename(os.path.dirname(os.path.abspath(__file__))).replace('-', '_')
-VERSION="0.0.3"
+VERSION="0.0.8"
 
 def get_requirements():
     reqs = []
@@ -37,7 +37,8 @@ setup(
     keywords = [],
     ## Sample entry point
     entry_points = {
-        'console_scripts': ['bump_package_patch_version = pydevutils.commands:bump_package_patch_version']
+        'console_scripts': ['bump_package_patch_version = pydevutils.commands:bump_package_patch_version',
+                            'make-github-repo = pydevutils.commands:make_github_repo']
     },
     classifiers=[
         'Development Status :: 3 - Alpha',
