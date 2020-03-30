@@ -71,16 +71,16 @@ class TestGitHubRepo(unittest.TestCase):
         self.assertEqual(gr.name, "gitrepo")
         
         
-    def test_make_repo(self):
+    def test_make_local_repo(self):
         
         gr = GitHubRepo(path="/tmp/testmakerepopath")
-        gr.make_repo()
+        gr.make_local_repo()
         
         
     def test_make_github_repo(self):
         
         gr = GitHubRepo(path="/tmp/testmakerepopath")
-        gr.make_repo()
+        gr.make_local_repo()
 
         gr.make_github_repo()
         

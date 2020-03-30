@@ -8,7 +8,6 @@ from git import Repo
 from os.path import expanduser
 
 
-
 def is_git_repo(path):
     
     path = Path(path, ".git")
@@ -52,7 +51,7 @@ class GitHubToken(object):
         try:
             with open(token_path.as_posix(), "r") as f:
                 token_str = f.read()
-                return token_str
+                return token_str.rstrip("\n")
         except FileNotFoundError as e:
             print("Token file {} was not found. Please create it.")
             sys.exit(1)
@@ -60,15 +59,36 @@ class GitHubToken(object):
 
     def __str__(self):
         return self.token
+    
+    
+class GitHub(object):
+    
+    def __init__(self, token=None):
+        
+        if token == None:
+            token = GitHubToken()
+            token = token.token.rstrip("\n")
+       
+        github = Github(token)
+        self.user = github.get_user()
+        
 
-class GitHubRepo(object):
+    def get_repos(self):
+        return self.user.get_repos()
+    
+    @property
+    def repos(self):
+        return self.get_repos()
+
+class GitHubRepo(GitHub):
     
     
     def __init__(self, path=None, name=None, token=None):
         self._path = path
         self._name = name
         self._local_repo = None
-    
+        
+        super()
     
     @property 
     def name(self):
@@ -113,10 +133,10 @@ class GitHubRepo(object):
     @property
     def local_repo(self):
         if self._local_repo == None:
-            self._local_repo, _ = self.make_repo()
+            self._local_repo, _ = self.make_local_repo()
         return self._local_repo
         
-    def make_repo(self):
+    def make_local_repo(self):
         """
         Creates a local repo. Same as doing git init
         """
@@ -136,6 +156,20 @@ class GitHubRepo(object):
             
         return repo, False
     
+    @property
+    def has_github_repo_as_remote(self):
+        """
+        Checks if the local repo has a remote set already
+        """
+    @property
+    def github_repo(self):
+        
+        #if self._github_repo does not exist then we need to find 
+        #out if the local repo already has a remote set. 
+        
+        if not self.has_github_repo_as_remote:
+            pass
+        
     def make_github_repo(self):
         """
         Creates a remote github repo
@@ -144,9 +178,20 @@ class GitHubRepo(object):
         github = Github(token.token.rstrip("\n"))
         user = github.get_user()
         repo = user.create_repo(self.name)
-        return repo
-    
         
+        self._github_repo = repo
+        
+        return repo
+       
+    def set_remote_to_github(self):
+        
+        url = "git@github.com:jnvilo/{}.git".format(self.name)
+        remote = repo.create_remote("origin", url=url)
+        
+        return remote
+    
+    
+
         
 if __name__ == "__main__":
     

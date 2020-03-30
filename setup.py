@@ -38,7 +38,8 @@ setup(
     ## Sample entry point
     entry_points = {
         'console_scripts': ['bump_package_patch_version = pydevutils.commands:bump_package_patch_version',
-                            'make-github-repo = pydevutils.commands:make_github_repo']
+                            'make-github-repo = pydevutils.commands:make_github_repo',
+                            'list-github-repos = pydevutils.commands:list_github_repos']
     },
     classifiers=[
         'Development Status :: 3 - Alpha',

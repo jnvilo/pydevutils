@@ -11,6 +11,8 @@ except Exception as e:
     print('Failed to load wingdbstub. Wing debugging will not be available')
 
 from pydevutils.gittools import GitHubRepo
+from pydevutils.gittools import GitHub
+from pydevutils.gittools import GitHubToken
 
 
 def bump_package_patch_version():
@@ -76,7 +78,7 @@ def make_github_repo():
     args = parser.parse_args()    
     gr = GitHubRepo(path=args.path, name=args.name)
     
-    local_repo, created = gr.make_repo()
+    local_repo, created = gr.make_local_repo()
     
     if created:
         print("Created local repo {}".format(args.path))
@@ -92,12 +94,34 @@ def make_github_repo():
         remote = gr.local_repo.create_remote("origin", repo.ssh_url)
     
     
+        
+        
     except github.GithubException as e:
         if e.status == 422: # Repository Exists
             print("Repository exists")
+        elif e.status == 401:
+            print("Failed to create repository: Bad credentials. Please make sure that you have a valid token.")
+        else:
+            print("Unhandled Exception: {}".format(e))
             
+   
+def list_github_repos():
+    
+    token = GitHubToken()
+    gh = GitHub(token.token)
+    
+    for i in gh.repos:
+        
+        print(i.full_name)
+    
+   
+   
+def set_remote():
+
+    gr = GitHubRepo()
+    
             
         
 if __name__ == "__main__":
     
-    make_github_repo()
+    list_github_repos()

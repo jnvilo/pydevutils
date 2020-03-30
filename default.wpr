@@ -61,6 +61,3 @@ proj.directory-list = [{'dirloc': loc('pydevutils'),
 proj.file-list = [loc('mkdocs.yml'),
                   loc('setup.py')]
 proj.file-type = 'shared'
-proj.launch-config = {loc('pydevutils/commands.py'): ('project',
-        (u'blacklist121233 --path /home/jnvilo/blacklist121233',
-         ''))}
