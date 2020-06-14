@@ -18,9 +18,9 @@ The test suit will build its own python version using the makefile.
 Reguirments
 ###
 
-   yum -y install npm gcc sqlite-devel openssl-devel libtiff-devel openjpeg-devel \
-   openjpeg2-devel libjpeg-turbo-devel  zlib-devel  freetype-devel lcms-devel \
-   lcms2-devel libexif-devel libffi-devel
+    yum -y install npm gcc sqlite-devel openssl-devel libtiff-devel openjpeg-devel \
+    openjpeg2-devel libjpeg-turbo-devel  zlib-devel  freetype-devel lcms-devel \
+    lcms2-devel libexif-devel libffi-devel
 
 
 
