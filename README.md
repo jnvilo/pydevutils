@@ -15,7 +15,7 @@ Test
 
 The test suit will build its own python version using the makefile. 
 
-Reguirments
+Building the development python virtualenv requires that you have(Fedora/Centos/Redhat): 
 ###
 
     yum -y install npm gcc sqlite-devel openssl-devel libtiff-devel openjpeg-devel \
