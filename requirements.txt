@@ -36,7 +36,7 @@ smmap==3.0.1
 tornado==6.0.4
 tqdm==4.44.0
 twine==3.1.1
-urllib3==1.25.8
+urllib3==1.26.5
 webencodings==0.5.1
 wrapt==1.12.1
 zipp==3.1.0
