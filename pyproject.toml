@@ -1,12 +1,14 @@
 [tool.poetry]
 name = "pydevutils"
-version = "0.12"
+version = "0.13"
 description = ""
 authors = ["Jason Viloria <jason.viloria@optiscangroup.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.11,<4.0"
+PyGithub = "^1.57"
+GitPython = "^3.1.30"
 
 [tool.poetry.dev-dependencies]
 
@@ -14,6 +16,8 @@ python = "^3.11"
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry.scripts]
+pdt = "pydevutils.commands.main:main"
 
 
 

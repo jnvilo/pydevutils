@@ -2,7 +2,7 @@ import sys
 import argparse
 
 """ Implements upcloud command line interface"""
-from pydevutils.commands.subcommands import registry
+from pydevutils.commands.subcommands.registry import registry
 
 
 def main():
