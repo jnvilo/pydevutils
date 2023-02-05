@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pydevutils"
+version = "0.12"
+description = ""
+authors = ["Jason Viloria <jason.viloria@optiscangroup.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+
+
